@@ -38,10 +38,37 @@ Makine öğrenmesi tahmini alındıktan sonra, özel olarak geliştirilmiş algo
 * **Sahte Negatifler (Fake Negatives):** Rakipleri karalamak amacıyla yazılan kısa ve aşırı negatif yorumlar.
 
 ## Veri Seti ve Keşifsel Veri Analizi (EDA)
-Projede **Kaggle Fake Reviews Dataset** kullanılmıştır. Model eğitimi öncesinde veri setinin karakteristik özelliklerini anlamak için `Matplotlib` ve `Seaborn` ile detaylı analizler yapılmıştır:
-* Gerçek ve Sahte yorumların Duygu Skoru dağılımları.
-* Etiket bazlı Yorum Uzunluğu yığılmaları.
-* Sınıflara göre Büyük Harf kullanım oranlarının Box-Plot analizi.
+
+Projede **Kaggle Fake Reviews Dataset** kullanılmıştır. Model eğitimi öncesinde veri setinin karakteristik özelliklerini anlamak ve model performansını ölçmek için yapılan analizler aşağıda detaylandırılmıştır:
+
+### 1. Sınıf Dağılımı (Class Distribution)
+<img width="718" height="530" alt="Ekran görüntüsü 2026-05-09 020541" src="https://github.com/user-attachments/assets/cab6478c-ce4d-403a-9f94-8ca4139fcba0" />
+
+
+> **Analiz:** Veri setimizdeki Sahte (CG) ve Gerçek (OR) yorumların dağılımını göstermektedir. Sınıfların mükemmel seviyede dengeli (balanced) olması, modelimizin herhangi bir sınıfa karşı taraflı (biased) öğrenmesini engellemiş ve sınıflandırma başarısını doğrudan artırmıştır.
+
+### 2. Kelime Bulutları (Word Clouds)
+<img width="812" height="237" alt="Ekran görüntüsü 2026-05-09 020611" src="https://github.com/user-attachments/assets/376a3789-680c-43b4-9883-7e932614b181" />
+
+
+> **Analiz:** Gerçek ve sahte yorumlarda en sık geçen kelimelerin metin madenciliği analizi. Sahte yorumlarda (sağda) "highly recommend", "well developed", "well written" gibi abartılı, kalıplaşmış ve kullanıcıları doğrudan satın almaya yönlendiren pazarlama dilinin (sinsi pazarlama) çok daha baskın olduğu net bir şekilde gözlemlenmektedir.
+
+### 3. Duygu Skoru Dağılımı (Sentiment Analysis)
+<img width="920" height="562" alt="Ekran görüntüsü 2026-05-09 020058" src="https://github.com/user-attachments/assets/f16df108-98ce-4d1c-9d1a-615dc0358871" />
+
+
+> **Analiz:** Yorumların TextBlob üzerinden hesaplanan duygu polaritelerinin yığılımı. Sahte yorumların (kırmızı), gerçek yorumlara (mavi) kıyasla belirli pozitif ve nötr noktalarda daha yapay, keskin ve organik olmayan bir dağılım (bot/spam davranışı) sergilediği doğrulanmıştır.
+### 4. Yorum Uzunluğu Dağılımı (Review Length Distribution)
+<img width="901" height="555" alt="Ekran görüntüsü 2026-05-09 020119" src="https://github.com/user-attachments/assets/9e2411cf-bd98-4651-8d9a-2a152e1505ea" />
+
+
+> **Analiz:** Yorumların karakter sayılarına göre yığılımını gösteren bu grafik, sahte ve gerçek metinler arasındaki yapısal farkı net bir şekilde ortaya koymaktadır. Sahte yorumların (kırmızı) özellikle 50-150 karakter aralığında keskin bir zirve (spike) yaptığı, gerçek yorumların (mavi) ise daha doğal ve geniş bir uzunluk yelpazesine yayıldığı tespit edilmiştir. Bu durum, manipülatif botların genellikle detaydan yoksun, yüzeysel ve kısa "spam" metinler ürettiğini kanıtlamaktadır.
+> 
+### 5. Model Başarısı: Karmaşıklık Matrisi (Confusion Matrix)
+<img width="800" height="600" alt="karmasiklik_matrisi" src="https://github.com/user-attachments/assets/1cdb75b7-7e34-4979-99f1-a49f1e6eb30b" />
+
+
+> **Analiz:** Geliştirilen Random Forest modelinin test verisi üzerindeki nihai tahmin başarı haritası. Ana köşegendeki (koyu mavi) doğru tahmin sayılarımızın (3602 Gerçek ve 3491 Sahte yorumun doğru bilinmesi) yüksekliği, kurulan NLP ve Stilometri tabanlı hibrit mimarinin sahtecilik tespitindeki gücünü ve kararlılığını sayısal olarak kanıtlamaktadır.
 
 ## Kurulum ve Çalıştırma
 
@@ -53,4 +80,8 @@ Projeyi yerel ortamınızda test etmek için:
 2. Gerekli kütüphaneleri kurun (NLTK corpora indirmeleri kodun içinde otomatik yapılmaktadır):
    ```bash
    pip install pandas numpy scikit-learn nltk textblob textstat matplotlib seaborn
-   python main.py      
+   python main.py
+
+
+
+   
